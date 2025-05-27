@@ -1,18 +1,18 @@
-import { RegisterInterface } from "@/types";
-import Api from "./api";
+import { RegisterInterface } from '@/types'
+import Api from './api'
 
 class FixerApi extends Api {
   constructor() {
-    super("fixer");
+    super('fixer')
   }
 
   async getByUserId(userId: string) {
-    return this.request("get", `/user/${userId}`);
+    return this.request('get', `/user/${userId}`)
   }
 
   async register(resource: RegisterInterface) {
-    return this.request("post", "/register", resource);
+    return this.request('post', '/register', resource)
   }
 }
 
-export default FixerApi;
+export default FixerApi

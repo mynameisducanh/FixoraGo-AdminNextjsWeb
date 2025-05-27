@@ -1,17 +1,17 @@
-import Api from "./api";
+import Api from './api'
 
 class SkillFixerApi extends Api {
   constructor() {
-    super("skill-fixer");
+    super('skill-fixer')
   }
 
   async getByUserId(userId: string) {
-    return this.request("get", `/user/${userId}`);
+    return this.request('get', `/user/${userId}`)
   }
 
-//   async register(resource: RegisterInterface) {
-//     return this.request("post", "/register", resource);
-//   }
+  //   async register(resource: RegisterInterface) {
+  //     return this.request("post", "/register", resource);
+  //   }
 }
 
-export default SkillFixerApi;
+export default SkillFixerApi

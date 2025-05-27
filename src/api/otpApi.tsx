@@ -1,17 +1,17 @@
-import Api from "@/api/api";
+import Api from '@/api/api'
 
 class ApiOtp extends Api {
   constructor() {
-    super("otp");
+    super('otp')
   }
 
   async sendOtp(email: string) {
-    return this.request("post", "/create", { email });
+    return this.request('post', '/create', { email })
   }
 
   async verifyOtp(email: string, otp: string) {
-    return this.request("post", "/validate", { email, otp });
+    return this.request('post', '/validate', { email, otp })
   }
 }
 
-export default ApiOtp;
+export default ApiOtp

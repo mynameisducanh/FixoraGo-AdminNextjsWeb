@@ -1,13 +1,13 @@
-import Api from "@/api/api";
+import Api from '@/api/api'
 
 class IconServiceApi extends Api {
   constructor() {
-    super("iconsService");
+    super('iconsService')
   }
 
   async getAll() {
-    return this.request("GET", "/");
+    return this.request('GET', '/')
   }
 }
 
-export default IconServiceApi;
+export default IconServiceApi

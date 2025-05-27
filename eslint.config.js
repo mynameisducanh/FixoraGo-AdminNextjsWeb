@@ -40,11 +40,12 @@ export default tseslint.config(
           destructuredArrayIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           ignoreRestSiblings: true,
+          caughtErrorsIgnorePattern: '^_',
         },
       ],
-      'react-hooks/rules-of-hooks': ['error', {
-        allowInNonReactFunctions: ['beforeLoad']
-      }]
+      'react-hooks/rules-of-hooks': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   }
 )

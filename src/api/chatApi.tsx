@@ -1,20 +1,20 @@
-import Api from "./api";
+import Api from './api'
 
 class ChatApi extends Api {
   constructor() {
-    super("chat");
+    super('chat')
   }
   async getAllByUserId(userId: string) {
-    return this.request("get", `/user/${userId}`);
+    return this.request('get', `/user/${userId}`)
   }
 
   async getAllByFixerId(staffId: string) {
-    return this.request("get", `/fixer/${staffId}`);
+    return this.request('get', `/fixer/${staffId}`)
   }
-  
+
   async getDetailByChatRoomId(id: string) {
-    return this.request("get", `/room/${id}`);
+    return this.request('get', `/room/${id}`)
   }
 }
 
-export default ChatApi;
+export default ChatApi

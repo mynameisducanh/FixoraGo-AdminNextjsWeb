@@ -8,11 +8,11 @@ import {
 } from 'react'
 import Cookies from 'js-cookie'
 import { ACCESS_TOKEN, REFRESH_TOKEN, USER_STORAGE_KEY } from '@/constants'
+import { router } from '@/main'
 import { SignInInterface, UserInterface } from '@/types'
 import AuthApi from '@/api/authApi'
 import TokenApi from '@/api/tokenApi'
 import UserApi from '@/api/userApi'
-import { router } from '@/main'
 
 interface UserStoreContextType {
   user: UserInterface | null
@@ -48,7 +48,7 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await userApi.me();
+      const response = await userApi.me()
       console.log(response)
       if (response) {
         console.log('log in user-store', response)
@@ -56,7 +56,7 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
         setUser(response)
         handleRedirectUser(response)
       }
-    } catch (error) {
+    } catch (_error) {
       console.log('no login')
       // logout()
     }
@@ -128,16 +128,14 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
       if (storedUser) {
         const parsedUser: UserInterface = JSON.parse(storedUser)
         setUser(parsedUser)
-      } 
+      }
       setLoading(false)
     }
 
     getStoredUser()
   }, [])
 
-  useEffect(() => {
-
-  }, [loading, isAuthenticated])
+  useEffect(() => {}, [loading, isAuthenticated])
 
   return (
     <UserStoreContext.Provider

@@ -1,17 +1,17 @@
-import { RegisterInterface, SignInInterface } from "@/types";
-import Api from "./api";
+import { RegisterInterface, SignInInterface } from '@/types'
+import Api from './api'
 
 class AuthApi extends Api {
   constructor() {
-    super("auth");
+    super('auth')
   }
   login(resource: SignInInterface) {
-    return this.request('post', '/login', resource);
+    return this.request('post', '/login', resource)
   }
 
   register(resource: RegisterInterface) {
-    return this.request('post', '/register', resource);
+    return this.request('post', '/register', resource)
   }
 }
 
-export default AuthApi;
+export default AuthApi

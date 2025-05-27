@@ -15,13 +15,12 @@ import { ThemeProvider } from './context/theme-context'
 import './index.css'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
-import { UserStoreProvider } from "./stores/userStore";
+import { UserStoreProvider } from './stores/userStore'
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error) => {
-        // eslint-disable-next-line no-console
         if (import.meta.env.DEV) console.log({ failureCount, error })
 
         if (failureCount >= 0 && import.meta.env.DEV) return false
