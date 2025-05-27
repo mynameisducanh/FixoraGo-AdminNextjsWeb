@@ -29,7 +29,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function Overview() {
+export function Analytics() {
   return (
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
       <BarChart accessibilityLayer data={chartData}>

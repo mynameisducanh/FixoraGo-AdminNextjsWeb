@@ -3,6 +3,8 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+import UserApi from '@/api/userApi'
 import { showSubmittedData } from '@/utils/show-submitted-data'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,16 +31,16 @@ import { User } from '../data/schema'
 
 const formSchema = z
   .object({
-    firstName: z.string().min(1, { message: 'First Name is required.' }),
-    lastName: z.string().min(1, { message: 'Last Name is required.' }),
+    firstname: z.string().min(1, { message: 'First Name is required.' }),
+    lastname: z.string().min(1, { message: 'Last Name is required.' }),
     username: z.string().min(1, { message: 'Username is required.' }),
-    phoneNumber: z.string().min(1, { message: 'Phone number is required.' }),
+    phonenumber: z.string().min(1, { message: 'Phone number is required.' }),
     email: z
       .string()
       .min(1, { message: 'Email is required.' })
       .email({ message: 'Email is invalid.' }),
     password: z.string().transform((pwd) => pwd.trim()),
-    role: z.string().min(1, { message: 'Role is required.' }),
+    roles: z.string().min(1, { message: 'Role is required.' }),
     confirmPassword: z.string().transform((pwd) => pwd.trim()),
     isEdit: z.boolean(),
   })
@@ -95,6 +97,7 @@ interface Props {
 
 export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
   const isEdit = !!currentRow
+  const userApi = new UserApi()
   const form = useForm<UserForm>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
@@ -105,22 +108,51 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
           isEdit,
         }
       : {
-          firstName: '',
-          lastName: '',
+          firstname: '',
+          lastname: '',
           username: '',
           email: '',
-          role: '',
-          phoneNumber: '',
+          roles: '',
+          phonenumber: '',
           password: '',
           confirmPassword: '',
           isEdit,
         },
   })
 
-  const onSubmit = (values: UserForm) => {
-    form.reset()
-    showSubmittedData(values)
-    onOpenChange(false)
+  const onSubmit = async (values: UserForm) => {
+    const newUser = {
+      firstName: values.firstname || 'test',
+      lastName: values.lastname || 'test',
+      username: values.username || 'test',
+      phoneNumber: values.phonenumber || '0835363536',
+      email: values.email || 'nguyendanh@gmail.com',
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+      roles: values.roles || 'system_fixer',
+    }
+    if (isEdit) {
+      form.reset()
+      showSubmittedData(values)
+      console.log(newUser)
+      onOpenChange(false)
+    } else {
+      form.reset()
+      try {
+        const res = await userApi.createUser(newUser)
+        if (res) {
+          console.log(res)
+          toast('Thông báo', {
+            description: 'Tạo user thành công',
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      showSubmittedData(values)
+      console.log(values)
+      onOpenChange(false)
+    }
   }
 
   const isPasswordTouched = !!form.formState.dirtyFields.password
@@ -150,7 +182,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
             >
               <FormField
                 control={form.control}
-                name='firstName'
+                name='firstname'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
                     <FormLabel className='col-span-2 text-right'>
@@ -158,7 +190,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='John'
+                        placeholder='Nguyễn'
                         className='col-span-4'
                         autoComplete='off'
                         {...field}
@@ -170,7 +202,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
               />
               <FormField
                 control={form.control}
-                name='lastName'
+                name='lastname'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
                     <FormLabel className='col-span-2 text-right'>
@@ -178,7 +210,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='Doe'
+                        placeholder='Anh'
                         className='col-span-4'
                         autoComplete='off'
                         {...field}
@@ -217,7 +249,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder='john.doe@gmail.com'
+                        placeholder='nguyenanh@gmail.com'
                         className='col-span-4'
                         {...field}
                       />
@@ -228,7 +260,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
               />
               <FormField
                 control={form.control}
-                name='phoneNumber'
+                name='phonenumber'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
                     <FormLabel className='col-span-2 text-right'>
@@ -247,7 +279,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
               />
               <FormField
                 control={form.control}
-                name='role'
+                name='roles'
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center space-y-0 gap-x-4 gap-y-1'>
                     <FormLabel className='col-span-2 text-right'>

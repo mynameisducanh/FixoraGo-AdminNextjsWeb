@@ -16,7 +16,7 @@ import './index.css'
 // Generated Routes
 import { routeTree } from './routeTree.gen'
 import { UserStoreProvider } from './stores/userStore'
-
+import { Toaster } from "@/components/ui/sonner"
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -93,6 +93,7 @@ if (!rootElement.innerHTML) {
           <FontProvider>
             <UserStoreProvider>
               <RouterProvider router={router} />
+              <Toaster/>
             </UserStoreProvider>
           </FontProvider>
         </ThemeProvider>
