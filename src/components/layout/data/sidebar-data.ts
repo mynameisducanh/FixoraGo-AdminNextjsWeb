@@ -76,6 +76,11 @@ export const sidebarData: SidebarData = {
           url: '/users',
           icon: IconUsers,
         },
+         {
+          title: 'Payment Fees',
+          url: '/paymentFees',
+          icon: IconUsers,
+        },
         {
           title: 'Secured by Clerk',
           icon: ClerkLogo,
