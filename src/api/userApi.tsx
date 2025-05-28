@@ -9,6 +9,10 @@ class UserApi extends Api {
     return this.request('get', `/me`)
   }
 
+  async createUser(data: any) {
+    return this.request('post', `/`, data)
+  }
+
   async getByUserId(id: string) {
     return this.request('get', `/${id}`)
   }
@@ -17,6 +21,14 @@ class UserApi extends Api {
     return this.request('PATCH', `/profile/${id}`, data, {
       'Content-Type': 'multipart/form-data',
     })
+  }
+
+  async getAllUser() {
+    return this.request('get', `/`)
+  }
+
+  async getAnalytics() {
+    return this.request('get', `/count`)
   }
 }
 

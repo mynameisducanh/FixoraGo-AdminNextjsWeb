@@ -12,9 +12,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useUsers } from '../context/users-context'
 import { User } from '../data/schema'
+import { UserInterface } from '@/types'
 
 interface DataTableRowActionsProps {
-  row: Row<User>
+  row: Row<UserInterface>
 }
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps) {

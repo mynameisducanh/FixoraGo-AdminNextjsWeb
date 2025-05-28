@@ -1,24 +1,31 @@
 import { useState, useEffect } from 'react'
 import RevenueManagerApi from '@/api/revenueManagerApi'
+import UserApi from '@/api/userApi'
 import { formatCurrency } from '@/utils/format'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface RecentBill {
-  user: {
-    username: string
-    email: string
-    avatarUrl: string
-  }
-  totalRevenue: string
+  id: string
+  firstname: string
+  username: string
+  lastname: string
+  fullName: string
+  emailVerified: number
+  email: string
+  avatarurl:string
+  roles: string
+  address: string
+  phonenumber: string
+  createAt: number
 }
 
-export function RecentSales() {
-  const revenueManagerApi = new RevenueManagerApi()
+export function RecentRegister() {
+  const userApi = new UserApi()
   const [recentBills, setRecentBills] = useState<RecentBill[]>([])
 
   const fetchData = async () => {
     try {
-      const res = await revenueManagerApi.getRecentBills()
+      const res = await userApi.getAllUser()
       if (res) {
         setRecentBills(res)
       }
@@ -33,11 +40,11 @@ export function RecentSales() {
 
   return (
     <div className='space-y-8'>
-      {recentBills.slice(0,6).map((bill, index) => (
+      {recentBills.slice(0, 6).map((bill, index) => (
         <div key={index} className='flex items-center gap-4'>
           <Avatar className='h-9 w-9'>
-            {bill.user.avatarUrl ? (
-              <AvatarImage src={`${bill.user.avatarUrl}`} alt='Avatar' />
+            {bill.avatarurl ? (
+              <AvatarImage src={`${bill.avatarurl}`} alt='Avatar' />
             ) : (
               <>
                 <AvatarImage
@@ -45,7 +52,7 @@ export function RecentSales() {
                   alt='Avatar'
                 />
                 <AvatarFallback>
-                  {bill.user.username.slice(0, 2).toUpperCase()}
+                  {bill.username.slice(0, 2).toUpperCase()}
                 </AvatarFallback>
               </>
             )}
@@ -53,12 +60,12 @@ export function RecentSales() {
           <div className='flex flex-1 flex-wrap items-center justify-between'>
             <div className='space-y-1'>
               <p className='text-sm leading-none font-medium'>
-                {bill.user.username}
+                {bill.username}
               </p>
-              <p className='text-muted-foreground text-sm'>{bill.user.email}</p>
+              <p className='text-muted-foreground text-sm'>{bill.email}</p>
             </div>
             <div className='font-medium'>
-              +{formatCurrency(Number(bill.totalRevenue))}đ
+              {bill.roles}
             </div>
           </div>
         </div>

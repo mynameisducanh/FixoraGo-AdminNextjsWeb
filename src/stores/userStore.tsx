@@ -13,6 +13,7 @@ import { SignInInterface, UserInterface } from '@/types'
 import AuthApi from '@/api/authApi'
 import TokenApi from '@/api/tokenApi'
 import UserApi from '@/api/userApi'
+import axios from 'axios'
 
 interface UserStoreContextType {
   user: UserInterface | null
@@ -32,7 +33,7 @@ export const UserStoreContext = createContext<UserStoreContextType | undefined>(
 )
 const authApi = new AuthApi()
 const tokenApi = new TokenApi()
-const userApi = new UserApi()
+// const userApi = new UserApi()
 
 export const useUserStore = () => {
   const context = useContext(UserStoreContext)
@@ -46,15 +47,25 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserInterface | null>(null)
   const [loading, setLoading] = useState(true)
 
-  const fetchUserData = async () => {
+  const fetchUserData = async (token: string) => {
     try {
-      const response = await userApi.me()
-      console.log(response)
+      const tokenLog = Cookies.get(ACCESS_TOKEN);
+       const response = await axios.get(
+        `${import.meta.env.VITE_APP_SERVER_URL}/users/me`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token || tokenLog}`,
+          },
+        }
+      );
+      console.log(response.data)
       if (response) {
-        console.log('log in user-store', response)
-        Cookies.set(USER_STORAGE_KEY, JSON.stringify(response))
-        setUser(response)
-        handleRedirectUser(response)
+        console.log('log in user-store', response.data)
+        Cookies.set(USER_STORAGE_KEY, JSON.stringify(response.data))
+        setUser(response.data)
+        handleRedirectUser(response.data)
       }
     } catch (_error) {
       console.log('no login')
@@ -70,7 +81,7 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
       const { refreshToken, accessToken } = res
       Cookies.set(REFRESH_TOKEN, refreshToken)
       Cookies.set(ACCESS_TOKEN, accessToken)
-      await fetchUserData()
+      await fetchUserData(accessToken);
       return Promise.resolve(res)
     }
   }
@@ -106,11 +117,11 @@ export const UserStoreProvider: FC<UserStoreProviderProps> = ({ children }) => {
           const response = await tokenApi.accressToken(refreshToken)
           if (response) {
             Cookies.set(ACCESS_TOKEN, response.accessToken)
-            fetchUserData()
+            fetchUserData(response)
           }
           return
         } else {
-          // logout()
+          logout()
         }
       }
     } catch (error) {

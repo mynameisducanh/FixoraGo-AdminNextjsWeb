@@ -3,12 +3,13 @@ import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import LongText from '@/components/long-text'
-import { callTypes, userTypes } from '../data/data'
+import { userTypes } from '../data/data'
 import { User } from '../data/schema'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
+import { UserInterface } from '@/types'
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<UserInterface>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -62,9 +63,8 @@ export const columns: ColumnDef<User>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
-      const { firstName, lastName } = row.original
-      const fullName = `${firstName} ${lastName}`
-      return <LongText className='max-w-36'>{fullName}</LongText>
+      const { fullName } = row.original
+      return <LongText className='max-w-36'>{fullName || 'N/A'}</LongText>
     },
     meta: { className: 'w-36' },
   },
@@ -78,25 +78,26 @@ export const columns: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: 'phoneNumber',
+    accessorKey: 'phonenumber',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Phone Number' />
     ),
-    cell: ({ row }) => <div>{row.getValue('phoneNumber')}</div>,
+    cell: ({ row }) => <div>{row.getValue('phonenumber') || 'N/A'}</div>,
     enableSorting: false,
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'emailVerified',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const { status } = row.original
-      const badgeColor = callTypes.get(status)
+      const { emailVerified } = row.original
+      const status = emailVerified === 1 ? 'Đã xác thực' : 'Chưa xác thực'
+      const badgeColor = emailVerified === 1 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn('capitalize', badgeColor)}>
-            {row.getValue('status')}
+            {status}
           </Badge>
         </div>
       )
@@ -108,13 +109,13 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'role',
+    accessorKey: 'roles',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Role' />
     ),
     cell: ({ row }) => {
-      const { role } = row.original
-      const userType = userTypes.find(({ value }) => value === role)
+      const { roles } = row.original
+      const userType = userTypes.find(({ value }) => value === roles)
 
       if (!userType) {
         return null
@@ -125,7 +126,7 @@ export const columns: ColumnDef<User>[] = [
           {userType.icon && (
             <userType.icon size={16} className='text-muted-foreground' />
           )}
-          <span className='text-sm capitalize'>{row.getValue('role')}</span>
+          <span className='text-sm capitalize'>{row.getValue('roles')}</span>
         </div>
       )
     },

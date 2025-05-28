@@ -9,27 +9,26 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import UserApi from '@/api/userApi'
 
 const chartConfig = {
-  monthlyRevenue: {
-    label: 'Monthly Revenue',
+  monthlyUserRegister: {
+    label: 'total regiter',
     color: '#2563eb',
   },
-  monthlyFees: {
-    label: 'Monthly Fees',
+  mobile: {
+    label: 'monthlyFees',
     color: '#60a5fa',
   },
 } satisfies ChartConfig
 
-export function Overview() {
-  const revenueManagerApi = new RevenueManagerApi()
-  const [yearlyTotalRevenue, setYearlyTotalRevenue] = useState()
-  const [yearlyTotalFees, setYearlyTotalFees] = useState()
+export function Overview2() {
+  const userApi = new UserApi()
   const [monthlyStats, setMonthlyStats] = useState([])
   const [monthlyFees, setMonthlyFees] = useState([])
   const fetchData = async () => {
     try {
-      const res = await revenueManagerApi.getForYear('2025')
+      const res = await userApi.getAnalytics()
       console.log(res)
       if (res) {
         setMonthlyStats(res.monthlyStats)
@@ -55,8 +54,7 @@ export function Overview() {
           tickFormatter={(value) => value.slice(0, 3)}
         />
         <ChartTooltip content={<ChartTooltipContent />} />
-        <Bar dataKey='monthlyRevenue' fill='var(--color-desktop)' radius={4} />
-        <Bar dataKey='monthlyFees' fill='var(--color-mobile)' radius={4} />
+        <Bar dataKey='monthlyUserRegister' fill='var(--color-desktop)' radius={4} />
       </BarChart>
     </ChartContainer>
   )
