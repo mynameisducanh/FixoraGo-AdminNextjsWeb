@@ -26,6 +26,10 @@ class UserApi extends Api {
   async getAllUser() {
     return this.request('get', `/`)
   }
+
+  async getAnalytics() {
+    return this.request('get', `/count`)
+  }
 }
 
 export default UserApi
