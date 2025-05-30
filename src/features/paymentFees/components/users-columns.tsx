@@ -1,15 +1,19 @@
+import { useState } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
+import { IconReceipt } from '@tabler/icons-react'
+import { PaymentFeesInterface, UserInterface } from '@/types'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import LongText from '@/components/long-text'
 import { userTypes } from '../data/data'
 import { User } from '../data/schema'
+import { BillDialog } from './bill-dialog'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
-import { UserInterface } from '@/types'
 
-export const columns: ColumnDef<UserInterface>[] = [
+export const columns: ColumnDef<PaymentFeesInterface>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -45,9 +49,10 @@ export const columns: ColumnDef<UserInterface>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Username' />
     ),
-    cell: ({ row }) => (
-      <LongText className='max-w-36'>{row.getValue('username')}</LongText>
-    ),
+    cell: ({ row }) => {
+      const { user } = row.original
+      return <LongText className='max-w-36'>{user.username || 'N/A'}</LongText>
+    },
     meta: {
       className: cn(
         'drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none',
@@ -58,13 +63,17 @@ export const columns: ColumnDef<UserInterface>[] = [
     enableHiding: false,
   },
   {
-    id: 'fullName',
+    id: 'name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => {
-      const { fullName } = row.original
-      return <LongText className='max-w-36'>{fullName || 'N/A'}</LongText>
+      const { user } = row.original
+      return (
+        <LongText className='max-w-36'>
+          {user.fullName !== ' ' ? user.fullName : 'N/A'}
+        </LongText>
+      )
     },
     meta: { className: 'w-36' },
   },
@@ -73,31 +82,43 @@ export const columns: ColumnDef<UserInterface>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
-    cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('email')}</div>
-    ),
+    cell: ({ row }) => {
+      const { user } = row.original
+      return <LongText className='max-w-56'>{user.email || 'N/A'}</LongText>
+    },
+    //  meta: { className: 'w-36' },
   },
+
   {
-    accessorKey: 'phonenumber',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Phone Number' />
-    ),
-    cell: ({ row }) => <div>{row.getValue('phonenumber') || 'N/A'}</div>,
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'emailVerified',
+    accessorKey: 'status',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Status' />
     ),
     cell: ({ row }) => {
-      const { emailVerified } = row.original
-      const status = emailVerified === 1 ? 'Đã xác thực' : 'Chưa xác thực'
-      const badgeColor = emailVerified === 1 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+      const { status } = row.original
+
+      let statusLabel = ''
+      let badgeColor = ''
+
+      switch (status) {
+        case 'active':
+          statusLabel = 'Đã xác thực'
+          badgeColor = 'bg-green-100 text-green-800'
+          break
+        case 'reject':
+          statusLabel = 'Bị từ chối'
+          badgeColor = 'bg-red-100 text-red-800'
+          break
+        default:
+          statusLabel = 'Chưa xác thực'
+          badgeColor = 'bg-yellow-100 text-yellow-800'
+          break
+      }
+
       return (
         <div className='flex space-x-2'>
           <Badge variant='outline' className={cn('capitalize', badgeColor)}>
-            {status}
+            {statusLabel}
           </Badge>
         </div>
       )
@@ -109,41 +130,43 @@ export const columns: ColumnDef<UserInterface>[] = [
     enableSorting: false,
   },
   {
-    accessorKey: 'roles',
+    accessorKey: 'note',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Role' />
+      <DataTableColumnHeader column={column} title='Note' />
     ),
     cell: ({ row }) => {
-      const { roles } = row.original
-      const userType = userTypes.find(({ value }) => value === roles)
+      const { note } = row.original
+      return <LongText className='max-w-56'>{note || 'N/A'}</LongText>
+    },
+    meta: { className: 'w-36' },
+  },
 
-      if (!userType) {
-        return null
-      }
-
+  {
+    id: 'bill',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Bill' />
+    ),
+    cell: ({ row }) => {
+      const [showBillDialog, setShowBillDialog] = useState(false)
       return (
-        <div className='flex items-center gap-x-2'>
-          {userType.icon && (
-            <userType.icon size={16} className='text-muted-foreground' />
-          )}
-          <span className='text-sm capitalize'>{row.getValue('roles')}</span>
-        </div>
+        <>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={() => setShowBillDialog(!!row.original.activityId)}
+            className='flex items-center gap-2'
+          >
+            <IconReceipt className='h-4 w-4' />
+            View Bill
+          </Button>
+          <BillDialog
+            open={showBillDialog}
+            onOpenChange={setShowBillDialog}
+            currentRow={row.original}
+          />
+        </>
       )
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
-   
-  {
-    accessorKey: 'infoVerified',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Point' />
-    ),
-    cell: ({ row }) => <div>{row.getValue('infoVerified') || 'N/A'}</div>,
-    enableSorting: false,
   },
   {
     id: 'actions',
