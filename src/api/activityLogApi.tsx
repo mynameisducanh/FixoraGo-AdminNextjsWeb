@@ -18,6 +18,13 @@ class ActivityLogApi extends Api {
   async getById(id: string) {
     return this.request('GET', `/${id}`)
   }
+
+  async getAllByFilter(params: any) {
+    return this.request(
+      'GET',
+      `/all/byFilter?sorttime=${params.sorttime}&activityType=${params.activityType}`
+    )
+  }
 }
 
 export default ActivityLogApi
