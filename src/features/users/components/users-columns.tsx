@@ -136,6 +136,15 @@ export const columns: ColumnDef<UserInterface>[] = [
     enableSorting: false,
     enableHiding: false,
   },
+   
+  {
+    accessorKey: 'infoVerified',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Point' />
+    ),
+    cell: ({ row }) => <div>{row.getValue('infoVerified') || 'N/A'}</div>,
+    enableSorting: false,
+  },
   {
     id: 'actions',
     cell: DataTableRowActions,
