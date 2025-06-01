@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ActivityLogInterface, PaymentFeesInterface } from '@/types'
+import { ActivityLogInterface, NewsInterface, PaymentFeesInterface } from '@/types'
 import ActivityLogApi from '@/api/activityLogApi'
 import RevenueManagerApi from '@/api/revenueManagerApi'
 import { Button } from '@/components/ui/button'
@@ -10,78 +10,73 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { ConfirmDialog } from '@/components/confirm-dialog'
+
 
 interface Props {
   open: boolean
   onOpenChange: (open: boolean) => void
-  currentRow: PaymentFeesInterface
+  currentRow: NewsInterface
 }
 
-export function BillDialog({ open, onOpenChange, currentRow }: Props) {
+export function ImageDialog({ open, onOpenChange, currentRow }: Props) {
   const [inputValue, setInputValue] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const [dataLog, setDataLog] = useState<ActivityLogInterface>()
   const activityLogApi = new ActivityLogApi()
   const revenueManagerApi = new RevenueManagerApi()
 
-  useEffect(() => {
-    if (!currentRow.activityId) {
-      onOpenChange(false)
-      return
-    }
-    fetchData()
-  }, [currentRow.activityId])
+  // useEffect(() => {
+  //   fetchData()
+  // }, [currentRow.activityId])
 
-  const fetchData = async () => {
-    try {
-      const res = await activityLogApi.getById(currentRow.activityId)
-      if (res) {
-        setDataLog(res)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const handleConfirm = async () => {
-    try {
-      const payload = {
-        status: 'active',
-        amount: inputValue,
-      }
-      const res = await revenueManagerApi.confirmBill2(
-        currentRow.id,
-        payload
-      )
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-    // TODO: Implement confirm logic
-    console.log('Confirm with value:', inputValue)
-    setShowConfirm(false)
-    onOpenChange(false)
-  }
+  // const fetchData = async () => {
+  //   try {
+  //     const res = await activityLogApi.getById(currentRow.activityId)
+  //     if (res) {
+  //       setDataLog(res)
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  // const handleConfirm = async () => {
+  //   try {
+  //     const payload = {
+  //       status: 'active',
+  //       amount: inputValue as string,
+  //     }
+  //     console.log(currentRow.id)
+  //     const res = await revenueManagerApi.confirmBill2(
+  //       currentRow.id,
+  //       payload
+  //     )
+  //     console.log(res)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  //   // TODO: Implement confirm logic
+  //   console.log('Confirm with value:', inputValue)
+  //   setShowConfirm(false)
+  //   onOpenChange(false)
+  // }
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Bill Details</DialogTitle>
-            <DialogDescription>
+            <DialogTitle>Image</DialogTitle>
+            {/* <DialogDescription>
               View and confirm bill details for user {currentRow.user.username}{' '}
               , email {currentRow.user.email}
-            </DialogDescription>
+            </DialogDescription> */}
           </DialogHeader>
 
           <div className='space-y-4'>
             {/* Image display */}
             <div className='bg-muted aspect-video w-full overflow-hidden rounded-lg'>
-              {dataLog?.imageUrl ? (
+              {currentRow?.image ? (
                 <img
-                  src={dataLog.imageUrl}
+                  src={currentRow.image}
                   alt='Bill image'
                   className='h-full w-full object-contain'
                 />
@@ -93,7 +88,7 @@ export function BillDialog({ open, onOpenChange, currentRow }: Props) {
             </div>
 
             {/* Input field */}
-            <div className='space-y-2'>
+            {/* <div className='space-y-2'>
               <Label htmlFor='bill-input'>Confirm that the user has paid</Label>
               <Input
                 id='bill-input'
@@ -102,27 +97,27 @@ export function BillDialog({ open, onOpenChange, currentRow }: Props) {
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder='Enter bill amount'
               />
-            </div>
+            </div> */}
 
             {/* Confirm button */}
-            <Button
+            {/* <Button
               className='w-full'
               onClick={() => setShowConfirm(true)}
               disabled={!inputValue}
             >
               Confirm
-            </Button>
+            </Button> */}
           </div>
         </DialogContent>
       </Dialog>
 
-      <ConfirmDialog
+      {/* <ConfirmDialog
         open={showConfirm}
         onOpenChange={setShowConfirm}
         title='Confirm Bill'
         desc={`Are you sure you want to confirm that username ${currentRow.user.username} has completed the payment of ${inputValue}?`}
         handleConfirm={handleConfirm}
-      />
+      /> */}
     </>
   )
 }

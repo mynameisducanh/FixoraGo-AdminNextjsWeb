@@ -86,6 +86,11 @@ export const sidebarData: SidebarData = {
           url: '/paymentFees',
           icon: IconPackages,
         },
+         {
+          title: 'News',
+          url: '/news',
+          icon: IconPackages,
+        },
         // {
         //   title: 'Secured by Clerk',
         //   icon: ClerkLogo,
