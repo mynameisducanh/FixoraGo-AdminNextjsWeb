@@ -20,21 +20,25 @@ class Api {
     const authHeaders: Record<string, string> = token
       ? { Authorization: `Bearer ${token}` }
       : {}
+
+    // Don't set Content-Type for FormData, let the browser set it with boundary
     const mergedHeaders: Record<string, string> = {
-      'Content-Type': 'application/json',
       ...headers,
       ...authHeaders,
     }
+
+    // Only set Content-Type for non-FormData requests
+    if (!(data instanceof FormData)) {
+      mergedHeaders['Content-Type'] = 'application/json'
+    }
+
     const options: RequestInit = {
       method,
       headers: mergedHeaders,
       ...(method === 'GET'
         ? { body: undefined }
         : {
-            body:
-              headers['Content-Type'] === 'multipart/form-data'
-                ? (data as FormData)
-                : JSON.stringify(data),
+            body: data instanceof FormData ? data : JSON.stringify(data),
           }),
     }
 

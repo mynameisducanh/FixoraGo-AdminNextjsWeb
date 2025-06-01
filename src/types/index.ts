@@ -60,6 +60,15 @@ export interface ActivityLogInterface {
   }
 }
 
+export interface NewsInterface {
+  id: string
+  title: string
+  content: string
+  image: string
+  description: string
+  createdAt: string
+}
+
 export interface SignInInterface {
   username: string
   password: string
