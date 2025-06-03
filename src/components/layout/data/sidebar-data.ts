@@ -86,7 +86,17 @@ export const sidebarData: SidebarData = {
           url: '/paymentFees',
           icon: IconPackages,
         },
-         {
+        {
+          title: 'Reports',
+          url: '/reports',
+          icon: IconPackages,
+        },
+        {
+          title: 'News',
+          url: '/news',
+          icon: IconPackages,
+        },
+        {
           title: 'News',
           url: '/news',
           icon: IconPackages,

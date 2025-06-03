@@ -58,6 +58,12 @@ export interface ActivityLogInterface {
     email: string
     avatarUrl: string
   }
+  fixer: {
+    fullName: string
+    username: string
+    email: string
+    avatarUrl: string
+  }
 }
 
 export interface NewsInterface {
