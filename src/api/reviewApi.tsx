@@ -16,6 +16,10 @@ class ReviewApi extends Api {
   async checkUserReview(requestServiceId: string) {
     return this.request('get', `/check-review/${requestServiceId}`)
   }
+
+  async getTotalReview(){
+    return this.request('get','/review/statistics')
+  }
 }
 
 export default ReviewApi

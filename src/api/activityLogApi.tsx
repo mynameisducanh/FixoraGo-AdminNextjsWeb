@@ -22,7 +22,7 @@ class ActivityLogApi extends Api {
   async getAllByFilter(params: any) {
     return this.request(
       'GET',
-      `/all/byFilter?sorttime=${params.sorttime}&activityType=${params.activityType}`
+      `/all/byFilter?type=${params.type}&sorttime=${params.sorttime}&activityType=${params.activityType}`
     )
   }
 }

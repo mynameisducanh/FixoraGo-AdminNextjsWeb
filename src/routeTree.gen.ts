@@ -30,6 +30,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedReportsIndexImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedPaymentFeesIndexImport } from './routes/_authenticated/paymentFees/index'
 import { Route as AuthenticatedNewsIndexImport } from './routes/_authenticated/news/index'
 import { Route as AuthenticatedHelpCenterIndexImport } from './routes/_authenticated/help-center/index'
@@ -160,6 +161,12 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any,
 )
+
+const AuthenticatedReportsIndexRoute = AuthenticatedReportsIndexImport.update({
+  id: '/reports/',
+  path: '/reports/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedPaymentFeesIndexRoute =
   AuthenticatedPaymentFeesIndexImport.update({
@@ -454,6 +461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPaymentFeesIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/reports/': {
+      id: '/_authenticated/reports/'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -512,6 +526,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
   AuthenticatedNewsIndexRoute: typeof AuthenticatedNewsIndexRoute
   AuthenticatedPaymentFeesIndexRoute: typeof AuthenticatedPaymentFeesIndexRoute
+  AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
@@ -525,6 +540,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
   AuthenticatedNewsIndexRoute: AuthenticatedNewsIndexRoute,
   AuthenticatedPaymentFeesIndexRoute: AuthenticatedPaymentFeesIndexRoute,
+  AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
@@ -604,6 +620,7 @@ export interface FileRoutesByFullPath {
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/news': typeof AuthenticatedNewsIndexRoute
   '/paymentFees': typeof AuthenticatedPaymentFeesIndexRoute
+  '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -635,6 +652,7 @@ export interface FileRoutesByTo {
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/news': typeof AuthenticatedNewsIndexRoute
   '/paymentFees': typeof AuthenticatedPaymentFeesIndexRoute
+  '/reports': typeof AuthenticatedReportsIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -671,6 +689,7 @@ export interface FileRoutesById {
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/news/': typeof AuthenticatedNewsIndexRoute
   '/_authenticated/paymentFees/': typeof AuthenticatedPaymentFeesIndexRoute
+  '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -707,6 +726,7 @@ export interface FileRouteTypes {
     | '/help-center'
     | '/news'
     | '/paymentFees'
+    | '/reports'
     | '/settings/'
     | '/tasks'
     | '/users'
@@ -737,6 +757,7 @@ export interface FileRouteTypes {
     | '/help-center'
     | '/news'
     | '/paymentFees'
+    | '/reports'
     | '/settings'
     | '/tasks'
     | '/users'
@@ -771,6 +792,7 @@ export interface FileRouteTypes {
     | '/_authenticated/help-center/'
     | '/_authenticated/news/'
     | '/_authenticated/paymentFees/'
+    | '/_authenticated/reports/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
@@ -842,6 +864,7 @@ export const routeTree = rootRoute
         "/_authenticated/help-center/",
         "/_authenticated/news/",
         "/_authenticated/paymentFees/",
+        "/_authenticated/reports/",
         "/_authenticated/tasks/",
         "/_authenticated/users/"
       ]
@@ -963,6 +986,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/paymentFees/": {
       "filePath": "_authenticated/paymentFees/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/reports/": {
+      "filePath": "_authenticated/reports/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/settings/": {

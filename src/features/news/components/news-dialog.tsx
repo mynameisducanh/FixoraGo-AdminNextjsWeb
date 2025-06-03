@@ -24,9 +24,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import Tiptap from './tiptap'
-import { ScrollArea } from "@/components/ui/scroll-area"
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Title is required.' }),
@@ -61,7 +61,7 @@ export function NewsDialog({ open, onOpenChange }: Props) {
       formData.append('file', values.image)
       formData.append('description', values.description)
       formData.append('content', values.content)
-      
+
       const res = await newsApi.create(formData)
       console.log(res)
       toast.success('News created successfully')
@@ -116,8 +116,8 @@ export function NewsDialog({ open, onOpenChange }: Props) {
                 <FormItem>
                   <FormLabel>File</FormLabel>
                   <FormControl>
-                    <Input 
-                      type="file"
+                    <Input
+                      type='file'
                       onChange={(e) => {
                         const file = e.target.files?.[0]
                         if (file) {
@@ -155,7 +155,7 @@ export function NewsDialog({ open, onOpenChange }: Props) {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <ScrollArea className="h-[300px] w-full rounded-md border">
+                    <ScrollArea className='h-[300px] w-full rounded-md border'>
                       <Tiptap
                         description={field.value}
                         onChange={field.onChange}

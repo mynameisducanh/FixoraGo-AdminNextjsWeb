@@ -11,8 +11,6 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import LongText from '@/components/long-text'
-import { userTypes } from '../data/data'
-import { User } from '../data/schema'
 import { BillDialog } from './bill-dialog'
 import { DataTableColumnHeader } from './data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
@@ -52,7 +50,7 @@ export const columns: ColumnDef<ActivityLogInterface>[] = [
     accessorKey: 'username-user',
     accessorFn: (row) => row?.user?.username,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Username User' />
+      <DataTableColumnHeader column={column} title='Username Report' />
     ),
     cell: ({ row }) => {
       const { user } = row.original
@@ -71,7 +69,7 @@ export const columns: ColumnDef<ActivityLogInterface>[] = [
     id: 'name-user',
     accessorFn: (row) => row?.user?.fullName,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Name User' />
+      <DataTableColumnHeader column={column} title='Name Report' />
     ),
     cell: ({ row }) => {
       const { user } = row.original
@@ -83,22 +81,22 @@ export const columns: ColumnDef<ActivityLogInterface>[] = [
     },
     meta: { className: 'w-36' },
   },
-  {
-    accessorKey: 'email-user',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email User' />
-    ),
-    cell: ({ row }) => {
-      const { user } = row.original
-      return <LongText className='max-w-56'>{user?.email || 'N/A'}</LongText>
-    },
-    //  meta: { className: 'w-36' },
-  },
+  // {
+  //   accessorKey: 'email-user',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Email User' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { user } = row.original
+  //     return <LongText className='max-w-56'>{user?.email || 'N/A'}</LongText>
+  //   },
+  //    meta: { className: 'w-36' },
+  // },
   {
     accessorKey: 'username-fixer',
     accessorFn: (row) => row?.fixer?.username,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Username Fixer' />
+      <DataTableColumnHeader column={column} title='Username Reported' />
     ),
     cell: ({ row }) => {
       const { fixer } = row.original
@@ -113,37 +111,37 @@ export const columns: ColumnDef<ActivityLogInterface>[] = [
     },
     enableHiding: false,
   },
-  {
-    id: 'name-fixer',
-    accessorFn: (row) => row?.fixer?.fullName,
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Name Fixer' />
-    ),
-    cell: ({ row }) => {
-      const { fixer } = row.original
-      return (
-        <LongText className='max-w-36'>
-          {fixer?.fullName !== ' ' ? fixer?.fullName : 'N/A'}
-        </LongText>
-      )
-    },
-    meta: { className: 'w-36' },
-  },
-  {
-    accessorKey: 'email-fixer',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Email Fixer' />
-    ),
-    cell: ({ row }) => {
-      const { fixer } = row.original
-      return <LongText className='max-w-56'>{fixer?.email || 'N/A'}</LongText>
-    },
-    //  meta: { className: 'w-36' },
-  },
+  // {
+  //   id: 'name-fixer',
+  //   accessorFn: (row) => row?.fixer?.fullName,
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Name Fixer' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { fixer } = row.original
+  //     return (
+  //       <LongText className='max-w-36'>
+  //         {fixer?.fullName !== ' ' ? fixer?.fullName : 'N/A'}
+  //       </LongText>
+  //     )
+  //   },
+  //   meta: { className: 'w-36' },
+  // },
+  // {
+  //   accessorKey: 'email-fixer',
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title='Email Fixer' />
+  //   ),
+  //   cell: ({ row }) => {
+  //     const { fixer } = row.original
+  //     return <LongText className='max-w-56'>{fixer?.email || 'N/A'}</LongText>
+  //   },
+  //    meta: { className: 'w-36' },
+  // },
   {
     accessorKey: 'activityType',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='activityType' />
+      <DataTableColumnHeader column={column} title='Type' />
     ),
     cell: ({ row }) => {
       const { activityType } = row.original
@@ -156,12 +154,12 @@ export const columns: ColumnDef<ActivityLogInterface>[] = [
           statusLabel = 'Fixer Check-in'
           badgeColor = 'bg-blue-100 text-blue-800'
           break
-        case 'staff_reject':
-          statusLabel = 'Fixer Reject'
+        case 'user_report':
+          statusLabel = 'User Report'
           badgeColor = 'bg-red-100 text-red-800' 
           break
-        case 'user_reject':
-          statusLabel = 'User Reject'
+        case 'fixer_report':
+          statusLabel = 'Fixer Report'
           badgeColor = 'bg-red-100 text-red-800' 
           break
         case 'staff_payfee':
