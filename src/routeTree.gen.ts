@@ -30,6 +30,7 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSettingsIndexImport } from './routes/_authenticated/settings/index'
+import { Route as AuthenticatedRequestServiceIndexImport } from './routes/_authenticated/requestService/index'
 import { Route as AuthenticatedReportsIndexImport } from './routes/_authenticated/reports/index'
 import { Route as AuthenticatedPaymentFeesIndexImport } from './routes/_authenticated/paymentFees/index'
 import { Route as AuthenticatedNewsIndexImport } from './routes/_authenticated/news/index'
@@ -161,6 +162,13 @@ const AuthenticatedSettingsIndexRoute = AuthenticatedSettingsIndexImport.update(
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any,
 )
+
+const AuthenticatedRequestServiceIndexRoute =
+  AuthenticatedRequestServiceIndexImport.update({
+    id: '/requestService/',
+    path: '/requestService/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 const AuthenticatedReportsIndexRoute = AuthenticatedReportsIndexImport.update({
   id: '/reports/',
@@ -468,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedReportsIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/requestService/': {
+      id: '/_authenticated/requestService/'
+      path: '/requestService'
+      fullPath: '/requestService'
+      preLoaderRoute: typeof AuthenticatedRequestServiceIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -527,6 +542,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNewsIndexRoute: typeof AuthenticatedNewsIndexRoute
   AuthenticatedPaymentFeesIndexRoute: typeof AuthenticatedPaymentFeesIndexRoute
   AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
+  AuthenticatedRequestServiceIndexRoute: typeof AuthenticatedRequestServiceIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
 }
@@ -541,6 +557,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNewsIndexRoute: AuthenticatedNewsIndexRoute,
   AuthenticatedPaymentFeesIndexRoute: AuthenticatedPaymentFeesIndexRoute,
   AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
+  AuthenticatedRequestServiceIndexRoute: AuthenticatedRequestServiceIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
 }
@@ -621,6 +638,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof AuthenticatedNewsIndexRoute
   '/paymentFees': typeof AuthenticatedPaymentFeesIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
+  '/requestService': typeof AuthenticatedRequestServiceIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -653,6 +671,7 @@ export interface FileRoutesByTo {
   '/news': typeof AuthenticatedNewsIndexRoute
   '/paymentFees': typeof AuthenticatedPaymentFeesIndexRoute
   '/reports': typeof AuthenticatedReportsIndexRoute
+  '/requestService': typeof AuthenticatedRequestServiceIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -690,6 +709,7 @@ export interface FileRoutesById {
   '/_authenticated/news/': typeof AuthenticatedNewsIndexRoute
   '/_authenticated/paymentFees/': typeof AuthenticatedPaymentFeesIndexRoute
   '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
+  '/_authenticated/requestService/': typeof AuthenticatedRequestServiceIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -727,6 +747,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/paymentFees'
     | '/reports'
+    | '/requestService'
     | '/settings/'
     | '/tasks'
     | '/users'
@@ -758,6 +779,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/paymentFees'
     | '/reports'
+    | '/requestService'
     | '/settings'
     | '/tasks'
     | '/users'
@@ -793,6 +815,7 @@ export interface FileRouteTypes {
     | '/_authenticated/news/'
     | '/_authenticated/paymentFees/'
     | '/_authenticated/reports/'
+    | '/_authenticated/requestService/'
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
@@ -865,6 +888,7 @@ export const routeTree = rootRoute
         "/_authenticated/news/",
         "/_authenticated/paymentFees/",
         "/_authenticated/reports/",
+        "/_authenticated/requestService/",
         "/_authenticated/tasks/",
         "/_authenticated/users/"
       ]
@@ -990,6 +1014,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/reports/": {
       "filePath": "_authenticated/reports/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/requestService/": {
+      "filePath": "_authenticated/requestService/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/settings/": {

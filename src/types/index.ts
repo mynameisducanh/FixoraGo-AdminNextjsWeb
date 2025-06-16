@@ -86,3 +86,48 @@ export interface RegisterInterface {
   password: string
   confirmPassword: string
 }
+
+export interface RequestServiceInterface {
+  id: string
+  userId: string
+  fixerId: string | null
+  nameService: string
+  listDetailService: string
+  priceService: string
+  typeEquipment: string
+  bonus: string | null
+  note: string
+  status: string
+  calender: string
+  address: string
+  fileImage: string | null
+  createAt: number
+  updateAt: number
+  deleteAt: string | null
+  temp: string | null
+  user: {
+    username: string
+    fullName: string
+    avatarUrl: string
+  }
+  fixer: {
+    username: string
+    fullName: string
+    avatarUrl: string
+  }
+}
+
+export interface RequestConfirmInterface {
+  id: string
+  requestConfirmId: string
+  name: string
+  type: 'replace' | 'repair'
+  price: string
+  userAccept: string | null
+  image: string
+  note: string
+  temp: string | null
+  createAt: number
+  updateAt: number
+  deleteAt: number | null
+}
