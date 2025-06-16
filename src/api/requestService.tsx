@@ -10,6 +10,9 @@ class RequestServiceApi extends Api {
   //     isFormData: "true",
   //   });
   // }
+  async getAll() {
+    return this.request('GET', `/`)
+  }
 
   async getListService(id: string) {
     return this.request('GET', `/${id}`)

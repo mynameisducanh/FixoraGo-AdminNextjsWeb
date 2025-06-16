@@ -97,8 +97,8 @@ export const sidebarData: SidebarData = {
           icon: IconPackages,
         },
         {
-          title: 'News',
-          url: '/news',
+          title: 'Requests Service',
+          url: '/requestService',
           icon: IconPackages,
         },
         // {
